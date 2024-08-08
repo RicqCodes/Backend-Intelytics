@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
@@ -7,6 +7,7 @@ import { DailyClaimsModule } from './modules/daily-claims/daily-claims.module';
 import { TokenPairsModule } from './modules/token-pairs/token-pairs.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { LoggingModule } from './modules/logging/logging.module';
+import { CorsMiddleware } from './cors/cors.middleware';
 
 @Module({
   imports: [
@@ -20,4 +21,8 @@ import { LoggingModule } from './modules/logging/logging.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CorsMiddleware).forRoutes('*'); // Apply to all routes
+  }
+}

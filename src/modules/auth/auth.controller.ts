@@ -8,6 +8,7 @@ import {
   UnauthorizedException,
   Res,
   Req,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
@@ -21,7 +22,14 @@ export class AuthController {
 
   @Post('register')
   async register(@Body(ValidationPipe) createUserDto: CreateUserDto) {
-    return this.authService.createAccount(createUserDto);
+    const user = this.authService.createAccount(createUserDto);
+
+    return {
+      data: { user },
+      message: 'Account created successfully',
+      statusCode: HttpStatus.NO_CONTENT,
+      timestamp: new Date().toISOString(),
+    };
   }
 
   @UseGuards(AuthGuard('local'))
@@ -38,7 +46,12 @@ export class AuthController {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
-    return { access_token, refresh_token };
+    return {
+      data: { access_token, refresh_token },
+      message: 'Login successfully',
+      statusCode: HttpStatus.NO_CONTENT,
+      timestamp: new Date().toISOString(),
+    };
   }
 
   @Post('refresh')

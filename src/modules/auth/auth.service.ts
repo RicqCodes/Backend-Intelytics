@@ -79,8 +79,7 @@ export class AuthService {
     const payload = { email: user.email, sub: user.id };
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: '15m',
-      audience: 'your-app-name',
-      issuer: 'your-app-name',
+      audience: 'intelytics',
     });
 
     const { token: refreshToken, id: refreshTokenId } =

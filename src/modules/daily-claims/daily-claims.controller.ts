@@ -17,7 +17,7 @@ export class ClaimController {
   @UseGuards(AuthGuard('jwt'))
   @Post(':day')
   async claim(@Req() req, @Param('day') day: number) {
-    const userId = req.user.id;
+    const userId = req.user.userId;
 
     // Ensure day is within valid range
     if (day < 1 || day > 7) {
@@ -30,7 +30,7 @@ export class ClaimController {
   @UseGuards(AuthGuard('jwt'))
   @Get('streak')
   async getStreak(@Req() req) {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     return this.claimService.getStreak(userId);
   }
 }
