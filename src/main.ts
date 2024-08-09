@@ -7,7 +7,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.setGlobalPrefix('api');
   app.enableCors({
-    origin: 'http://localhost:3000', // Your Next.js app's URL
+    origin: ['https://intelytics-fe.vercel.app', 'http://localhost:3000'], // Your Next.js app's URL
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,

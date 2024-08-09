@@ -28,7 +28,6 @@ export class ClaimService {
     emeraldsEarned: number;
   }> {
     const claimDay = this.validateDay(day);
-    // const user = await this.getUser(userId);
     const { currentStreak, lastClaimedAt } = await this.getStreak(userId);
 
     this.validateClaimDay(claimDay, currentStreak);
