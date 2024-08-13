@@ -114,6 +114,8 @@ export class ClaimService {
     );
   }
 
+  // 86_400_000
+
   private async updateUserAndCreateClaim(
     userId: number,
     newStreak: number,

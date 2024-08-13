@@ -10,13 +10,15 @@ export class StreakResetService {
   async resetStreaks() {
     const users = await this.prisma.user.findMany();
     const now = new Date();
+    const oneDayInMs = 24 * 60 * 60 * 1000;
 
     for (const user of users) {
       const lastClaimedAt = new Date(user.lastClaimedAt);
-      const timeDifference = now.getTime() - lastClaimedAt.getTime();
-      const hoursDifference = timeDifference / (1000 * 3600);
 
-      if (hoursDifference >= 48) {
+      if (
+        now.getTime() - lastClaimedAt.getTime() > 2 * oneDayInMs ||
+        now.getUTCDate() - lastClaimedAt.getUTCDate() > 1
+      ) {
         await this.prisma.user.update({
           where: { id: user.id },
           data: { currentStreak: 0 },
