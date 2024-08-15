@@ -17,7 +17,8 @@ export class StreakResetService {
 
       if (
         now.getTime() - lastClaimedAt.getTime() > 2 * oneDayInMs ||
-        now.getUTCDate() - lastClaimedAt.getUTCDate() > 1
+        now.getUTCDate() - lastClaimedAt.getUTCDate() > 1 ||
+        user.currentStreak >= 7
       ) {
         await this.prisma.user.update({
           where: { id: user.id },
