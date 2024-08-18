@@ -28,8 +28,10 @@ export class UserService {
     }
   }
 
-  async getUser(id: number): Promise<User> {
-    const user = await this.prisma.user.findUnique({ where: { id } });
+  async getUser(id: number): Promise<Omit<User, 'password'>> {
+    const { password, ...user } = await this.prisma.user.findUnique({
+      where: { id },
+    });
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }

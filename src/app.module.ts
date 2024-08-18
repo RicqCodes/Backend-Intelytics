@@ -8,7 +8,6 @@ import { TokenPairsModule } from './modules/token-pairs/token-pairs.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { LoggingModule } from './modules/logging/logging.module';
 import { CorsMiddleware } from './cors/cors.middleware';
-import { CosmwasmConnectionManagerService } from './cosmwasm-connection-manager/cosmwasm-connection-manager.service';
 
 @Module({
   imports: [
@@ -20,7 +19,7 @@ import { CosmwasmConnectionManagerService } from './cosmwasm-connection-manager/
     LoggingModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CosmwasmConnectionManagerService],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

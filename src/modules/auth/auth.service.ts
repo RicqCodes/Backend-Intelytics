@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   UnauthorizedException,
@@ -53,22 +54,29 @@ export class AuthService {
   async validateUser(
     loginUserDto: LoginUserDto,
   ): Promise<Omit<User, 'password'> | null> {
-    const { email, password } = loginUserDto;
-    const user = await this.prisma.user.findUnique({ where: { email } });
-    if (!user) {
-      this.logger.log('The user with this email or password is wrong');
-      return null;
-    }
+    try {
+      const { email, password } = loginUserDto;
+      const user = await this.prisma.user.findUnique({ where: { email } });
+      if (!user) {
+        this.logger.log('The user with this email or password is wrong');
+        return null;
+      }
 
-    const isPasswordValid = await this.verifyPassword(password, user.password);
-    if (!isPasswordValid) {
-      this.logger.log('The user with this email or password is wrong');
-      return null;
-    }
+      const isPasswordValid = await this.verifyPassword(
+        password,
+        user.password,
+      );
+      if (!isPasswordValid) {
+        this.logger.log('The user with this email or password is wrong');
+        return null;
+      }
 
-    const { password: _, ...result } = user;
-    this.logger.log(`User validated: ${email}`);
-    return result;
+      const { password: _, ...result } = user;
+      this.logger.log(`User validated: ${email}`);
+      return result;
+    } catch (err) {
+      throw new BadRequestException(err);
+    }
   }
 
   async login(user: Omit<User, 'password'>): Promise<{

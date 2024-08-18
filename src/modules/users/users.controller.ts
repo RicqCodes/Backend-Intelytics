@@ -28,8 +28,8 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  async getUser(@Request() req): Promise<User> {
-    return this.userService.getUser(req.user.id);
+  async getUser(@Request() req): Promise<Omit<User, 'password'>> {
+    return this.userService.getUser(req.user.userId);
   }
 
   @UseGuards(AuthGuard('jwt'))
